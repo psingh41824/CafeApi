@@ -10,13 +10,12 @@ const bodyParser = require('body-parser')
 const cafeRoute = require('./routes/cafeRoute')
 
 
-
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 
 app.use('/api', cafeRoute)
 
-mongoose.connect(MONGO_URL, {dbName: 'OtpGenerate',  retryWrites: true, w: 'majority' })
+mongoose.connect(MONGO_URL, {dbName: 'Cafe',  retryWrites: true, w: 'majority' })
 
 .then(() => console.log('Connected to MongoDB'))
 .catch(error => console.error('Connection failed', error))
