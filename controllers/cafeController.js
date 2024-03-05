@@ -75,7 +75,7 @@ const createCategory = async (req , res ) => {
 
         const category = new Category({
             name: req.body.name,
-            icon: req.body.icon,//req.file ? req.file.filename : '', // Check if req.file exists before accessing its properties
+            icon: req.file.filename,   //req.file ? req.file.filename : '', // Check if req.file exists before accessing its properties
             color: req.body.color
         });
 
