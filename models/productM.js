@@ -19,7 +19,7 @@ const recommendSchema = mongoose.Schema({
     },
     size: {
         type: String,
-        default: ''
+        
     },
     category: {
         type: mongoose.Schema.Types.ObjectId,

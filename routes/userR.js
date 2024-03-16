@@ -2,40 +2,9 @@ const express = require('express')
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const User = require('../models/userM');
-const multer =  require('multer')
-const fs = require('fs');
 const { addValidator } = require('../helpers/validation');
-const uploadDirectory = 'public/uploads';
+const upload = require('../helpers/multer')
 const { validationResult } = require('express-validator');
-
-if (!fs.existsSync(uploadDirectory)) {
-    fs.mkdirSync(uploadDirectory, { recursive: true });
-}
-
-const FILE_TYPE_MAP = {
-    'image/png': 'png',
-    'image/jpeg': 'jpeg',
-    'image/jpg': 'jpg',
-}
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        const isValid = FILE_TYPE_MAP[file.mimetype];
-        let uploadError = new Error('invalid image type');
-
-        if (isValid) {
-            uploadError = null;
-        }
-        cb(uploadError, uploadDirectory); // Use the uploadDirectory variable
-    },
-    filename: function (req, file, cb) {
-        const filename = file.originalname.split(' ').join('-');
-        const extension = FILE_TYPE_MAP[file.mimetype];
-        cb(null, `${filename}-${Date.now()}.${extension}`);
-    }
-});
-
-  const upload = multer({ storage: storage })
 
 router.post('/register',upload.single('image'),addValidator, async (req, res) => {
 
@@ -55,16 +24,13 @@ router.post('/register',upload.single('image'),addValidator, async (req, res) =>
             })
         }
 
-    const filename = req.file.filename;
-    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
-
     let user = new User({
         name: req.body.name,
         email: req.body.email,
         password: bcrypt.hashSync(req.body.password, 10),
         phone: req.body.phone,
         isAdmin: req.body.isAdmin,
-        image: `${basePath}${filename}`
+        image: req.file.path
     })
 
     user = await user.save();

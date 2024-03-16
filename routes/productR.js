@@ -31,13 +31,11 @@ router.post('/', upload.single('image'),async (req,res)=>{
     if(!file) {
         return res.status(400).send('no image in the request')
     }
-    const filename = req.file.filename;
-    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
 
     let product = new Product({
         name: req.body.name,
         description: req.body.description,
-        image: `${basePath}${filename}`,
+        image: file.path,
         price: req.body.price,
         category: category,
         rating: req.body.rating,
@@ -71,7 +69,7 @@ router.get('/:id', async (req , res) => {
     res.send(products)
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id',upload.single('image'), async (req, res) => {
     try {
 
         if(!mongoose.isValidObjectId(req.params.id)){
@@ -88,7 +86,7 @@ router.put('/:id', async (req, res) => {
             {
                 name: req.body.name,
                 description: req.body.description,
-                image: req.body.image,
+                image: req.file.path,
                 price: req.body.price,
                 category: category,
                 countInStock: req.body.countInStock,

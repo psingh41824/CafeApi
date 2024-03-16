@@ -26,13 +26,11 @@ router.post('/', upload.single('image'),async (req,res)=>{
     if(!file) {
         return res.status(400).send('no image in the request')
     }
-    const filename = req.file.filename;
-    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
-
+   
     let banner = new Banner({
         offer: req.body.offer,
         offerDate: req.body.offerDate,
-        banner: `${basePath}${filename}`
+        banner: file.path
         
     })
     banner = await banner.save()

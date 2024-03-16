@@ -25,7 +25,7 @@ router.get('/', async (req, res) =>{
 
 })
 
-router.post('/c', async (req,res)=>{
+router.post('/', async (req,res)=>{
     try{
 
     const banner = await Banner.findById(req.body.bannerId)  
