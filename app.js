@@ -27,6 +27,7 @@ app.use('/api/cafe', cafeRoute)
 app.use('/api/banner', bannerRoute)
 
 
+
 mongoose.connect(MONGO_URL, {dbName: 'MyCafe',  retryWrites: true, w: 'majority' })
 
 .then( () =>{console.log("Database Connecting is ready...") })

@@ -26,8 +26,8 @@ router.post('/',upload.single('image'), async (req, res) => {
     if (!file)
         return res.status(400).send('No image in the request')
         const filename = req.file.filename;
-        const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
-     
+        //const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
+        const basePath = 'https://apicafe.cyclic.app/public/uploads/'
       const { name } = req.body;
       if (!name) {
         return res.status(400).json({ error: 'Category name is required' });

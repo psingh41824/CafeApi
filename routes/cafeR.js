@@ -15,7 +15,7 @@ router.get('/', async (req, res) =>{
     .populate('category')
     .populate({ path: 'recommend', populate: { path: 'category' } })
     .exec();
-    if (!cafe) {
+    if (!cafe || cafe.length === 0) {
         res.status(500).json({ success: false })
     }
     res.status(200).json({
