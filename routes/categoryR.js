@@ -32,11 +32,11 @@ const upload = require('../helpers/multer')
     if (!file)
         return res.status(400).send('No image in the request')
      
-      const { name } = req.body;
-      if (!name) { return res.status(400).json({ error: 'Category name is required' });}
+      // const { name } = req.body;
+      // if (!name) { return res.status(400).json({ error: 'Category name is required' });}
 
       let category = new Category({ 
-        name,
+       // name,
         image:file.path
      });
       category = await category.save();
