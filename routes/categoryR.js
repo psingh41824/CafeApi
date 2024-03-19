@@ -3,40 +3,18 @@ const express = require('express')
 const router = express.Router()
 const upload = require('../helpers/multer')
 
-// router.post('/', async (req, res) => {
-//     try {
-     
-//       const { name } = req.body;
-//       if (!name) { return res.status(400).json({ error: 'Category name is required' });}
-
-//       let category = new Category({ 
-//         name
-//      });
-//       category = await category.save();
-  
-//       return res.status(201).json({category});
-      
-//     }
-//      catch(error){
-//         return res.status(400).json({
-//             success: false,
-//             msg:error.message
-//         })
-//     }
-//   });
 
   router.post('/',upload.single('image'), async (req, res) => {
     try {
 
     const file = req.file;
-    if (!file)
-        return res.status(400).send('No image in the request')
+    if (!file){ return res.status(400).send('No image in the request') }
      
-      // const { name } = req.body;
-      // if (!name) { return res.status(400).json({ error: 'Category name is required' });}
+    const { name } = req.body;
+    if (!name) { return res.status(400).json({ error: 'Category name is required' });}
 
       let category = new Category({ 
-       // name,
+        name,
         image:file.path
      });
       category = await category.save();
