@@ -9,18 +9,22 @@ const Banner = require('../models/bannerM')
 
 router.get('/', async (req, res) =>{
 
-    const cafe = await Cafe.find()
-    .populate('banner')
-    .populate('recommend')
-    .populate('category')
-    .populate({ path: 'recommend', populate: { path: 'category' } })
+    const banner = await Banner.find().populate('banner')
+    //const category = await Category.find().populate('ategory')
+    //const recommend = await Product.find().populate('recommend').populate({ path: 'recommend', populate: { path: 'category' } })
+
+    // .populate('recommend')
+    // .populate('category')
+    // .populate({ path: 'recommend', populate: { path: 'category' } })
     .exec();
-    if (!cafe) {
-        res.status(500).json({ success: false })
-    }
+    // if (!cafe) {
+    //     res.status(500).json({ success: false })
+    // }
     res.status(200).json({
         success : true,
-        data : {cafe}
+        banner:banner,
+       // category:category,
+       // recommend:recommend
     })
 
 })
