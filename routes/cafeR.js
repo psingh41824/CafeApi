@@ -17,9 +17,15 @@ router.get('/', async (req, res) =>{
     // .populate('category')
     // .populate({ path: 'recommend', populate: { path: 'category' } })
     .exec();
+
     // if (!cafe) {
     //     res.status(500).json({ success: false })
     // }
+
+    if (!cafe || cafe.length === 0) {
+        res.status(500).json({ success: false })
+    }
+
     res.status(200).json({
         success : true,
         banner:banner,
@@ -29,7 +35,7 @@ router.get('/', async (req, res) =>{
 
 })
 
-router.post('/c', async (req,res)=>{
+router.post('/', async (req,res)=>{
     try{
 
     const banner = await Banner.findById(req.body.bannerId)  

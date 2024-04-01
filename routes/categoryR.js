@@ -3,7 +3,36 @@ const express = require('express')
 const router = express.Router()
 const upload = require('../helpers/multer')
 
-router.get('/', async (req, res) => {
+
+  router.post('/',upload.single('image'), async (req, res) => {
+    try {
+
+    const file = req.file;
+    if (!file){ return res.status(400).send('No image in the request') }
+     
+    const { name ,isSwitchOn} = req.body;
+    if (!name) { return res.status(400).json({ error: 'Category name is required' });}
+
+      let category = new Category({ 
+        name,
+        image:file.path,
+        isSwitchOn
+        
+     });
+      category = await category.save();
+  
+      return res.status(201).json({category});
+      
+    }
+     catch(error){
+        return res.status(400).json({
+            success: false,
+            msg:error.message
+        })
+    }
+  });
+  
+  router.get('/', async (req, res) => {
     try {
       const categories = await Category.find();
 
@@ -19,41 +48,13 @@ router.get('/', async (req, res) => {
     }
   });
 
-router.post('/',upload.single('image'), async (req, res) => {
-    try {
-
-    const file = req.file;
-    if (!file)
-        return res.status(400).send('No image in the request')
-        const filename = req.file.filename;
-        const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
-     
-      const { name } = req.body;
-      if (!name) {
-        return res.status(400).json({ error: 'Category name is required' });
-      }
-      let category = new Category({ 
-        name,
-        icon:`${basePath}${filename}`
-     });
-      category = await category.save();
-  
-      return res.status(201).json({category});
-      
-    } catch(error){
-        return res.status(400).json({
-            success: false,
-            msg:error.message
-        })
-    }
-  });
-  
 router.put('/:id', async (req, res) =>{
     const category = await Category.findByIdAndUpdate(
         req.params.id,
         {
             name: req.body.name,
-            icon: req.body.icon
+            image: req.body.image,
+
         },
         { new: true }
     )

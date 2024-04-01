@@ -1,4 +1,5 @@
 const Banner  = require('../models/bannerM')
+const cloudinary = require('cloudinary').v2;
 const express = require('express')
 const router = express.Router()
 const upload = require('../helpers/multer')
@@ -26,13 +27,11 @@ router.post('/', upload.single('image'),async (req,res)=>{
     if(!file) {
         return res.status(400).send('no image in the request')
     }
-    const filename = req.file.filename;
-    const basePath = `${req.protocol}://${req.get('host')}/public/uploads/`
-
+   
     let banner = new Banner({
         offer: req.body.offer,
         offerDate: req.body.offerDate,
-        banner: `${basePath}${filename}`
+        banner: file.path
         
     })
     banner = await banner.save()
@@ -48,5 +47,26 @@ router.post('/', upload.single('image'),async (req,res)=>{
    }
 
 })
+
+router.delete('/:id', (req, res)=>{
+       
+  Banner.findOneAndDelete(req.params.id)
+  .then(banner =>{
+      if(banner){
+          return res.status(200).json({
+              success:true,
+              message: 'Banner deleted successfully'
+          })
+      }
+      else {
+          return res.status(404).json({ success: false, message: 'Banner cannot find'})
+      }
+  })
+
+  .catch(err =>{
+        return res.status(404).json({ success: false, error:err})  
+  })
+  
+})  
 
 module.exports = router;

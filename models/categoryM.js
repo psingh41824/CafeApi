@@ -5,10 +5,14 @@ const categorySchema = mongoose.Schema({
         type:String,
         require:true
     },
-    icon :{
+    image :{
         type: String,
         require : true
-    }
+    },
+    isSwitchOn: {
+        type: Boolean,
+        default: false
+      }
 })
 
 module.exports = mongoose.model('Category',categorySchema)

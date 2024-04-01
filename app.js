@@ -25,6 +25,12 @@ app.use('/api/category', categoryRoute)
 app.use('/api/product', productRoute)
 app.use('/api/cafe', cafeRoute)
 app.use('/api/banner', bannerRoute)
+// //------------------------
+
+// app.use(fileUpload({
+//     useTempFiles:true
+// }))
+// //-------------------------
 
 
 mongoose.connect(MONGO_URL, {dbName: 'MyCafe',  retryWrites: true, w: 'majority' })
