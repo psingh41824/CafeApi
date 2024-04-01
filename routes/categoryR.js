@@ -10,12 +10,14 @@ const upload = require('../helpers/multer')
     const file = req.file;
     if (!file){ return res.status(400).send('No image in the request') }
      
-    const { name } = req.body;
+    const { name ,isSwitchOn} = req.body;
     if (!name) { return res.status(400).json({ error: 'Category name is required' });}
 
       let category = new Category({ 
         name,
-        image:file.path
+        image:file.path,
+        isSwitchOn
+        
      });
       category = await category.save();
   
@@ -51,7 +53,8 @@ router.put('/:id', async (req, res) =>{
         req.params.id,
         {
             name: req.body.name,
-            icon: req.body.icon
+            image: req.body.image,
+
         },
         { new: true }
     )

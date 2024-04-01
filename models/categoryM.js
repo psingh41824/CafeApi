@@ -8,7 +8,11 @@ const categorySchema = mongoose.Schema({
     image :{
         type: String,
         require : true
-    }
+    },
+    isSwitchOn: {
+        type: Boolean,
+        default: false
+      }
 })
 
 module.exports = mongoose.model('Category',categorySchema)
